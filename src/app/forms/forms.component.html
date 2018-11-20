@@ -1,0 +1,133 @@
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    Template Form
+  </div>
+  <div class="panel-body">
+
+    <!-- we dont want data in fragments but as a whole, because the whole form will be submitted as once
+    therefore we used this #form, after submitting all the form data go inside that "#form" AND novalidate will not
+    validate the form and will save it directly.-->
+    <form #form="ngForm" novalidate (submit)="submitForms(form)">
+      <div class="form-group" [class.has-error]="Firstname.invalid">
+        <label class="control-label" for="fname">First Name:</label>
+        <!-- "for" in label is binded to the id of input -->
+          <input
+          type="text"
+          placeholder="firstName"
+          id="fname"
+          name="firstname"
+          class="form-control"
+          [ngModel]="model.firstname"
+          (ngModelChange)="firstToUpper($event)"
+          required
+          #Firstname="ngModel">
+        <div class="alert alert-warning"
+        *ngIf="Firstname.invalid">
+          First Name is required
+        </div>
+          <!-- here we used a reference "Firstname" to find out the classes associated with this element -->
+          <h3>classes</h3>
+          <h3>{{Firstname.invalid}}</h3>
+          <!-- above we will break the two way binding in 2 parts to get further control of our forms. as we can see two
+          way binding is composite of square and normal braces which are for property and event biniding resp. we make
+        that to single square bracket so now its property binding and in normal brackets we write one event "ngModelchange"
+      which makes sure that when we start writing something, it will fire an event which in this case is firsToUpper
+    . "$event" holds the value of wat user will type.  -->
+      </div>
+
+
+
+      <div class="form-group" [class.has-error]="LastName.invalid">
+        <label class="control-label" for="lname">Last Name:</label>
+          <input
+          type="text"
+          placeholder="lastName"
+          id="lname"
+          name="lastname"
+          class="form-control"
+          minlength="5"
+          [(ngModel)]="model.lastname"
+          #LastName="ngModel">
+        <div class="alert alert-warning" *ngIf="LastName.invalid">
+          Minimum 5 chars are required
+        </div>
+      </div>
+
+
+
+      <!-- we r using pattern and regex(regular expression) for email id, it can be used anywhere we want to specify
+        a pattern in which we want our info. a pattern starts with "^" symbol and ends with "$", in between we can write anything
+      in square brackets is the content we want and in curly braces is the number of chars we want them to have,
+      in thegiven example we can have alphabets form A to Z and a to z and number from 0-9 but the string will be only 10
+      chars long.-->
+      <div class="form-group" [class.has-error]="Email.invalid">
+        <label class="control-label" for="email">Email ID:</label>
+          <input
+          type="text"
+          placeholder="email"
+          id="email"
+          name="email"
+          class="form-control"
+          minlength="5"
+          pattern="^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$"
+          [(ngModel)]="model.email"
+          #Email="ngModel">
+        <div class="alert alert-warning" *ngIf="Email.invalid">
+          please enter a valid email id
+        </div>
+      </div>
+
+
+      <div class="checkbox">
+        <label for="">
+            <input
+            type="checkbox"
+            name="fulltime"
+            id=""
+            [(ngModel)]="model.fulltime">
+          Full-Time
+        </label>
+      </div>
+      <!-- in radio buttons if we want to click one radio button and other to be unselcted then we need to do
+      grouping which is done by just changing "name" field to one parameter, like below the name field for both of
+      them is gender. -->
+      <div class="radio">
+          <label for="">
+              <input
+              type="radio"
+              name="gender"
+              value="female"
+              [(ngModel)]="model.gender">
+            Female
+          </label>
+      </div>
+      <div class="radio">
+          <label for="">
+              <input
+              type="radio"
+              name="gender"
+              value="male"
+              [(ngModel)]="model.gender">
+            Male
+          </label>
+      </div>
+
+      <div class="form-group">
+        <label>Coding Languages:</label>
+        <select class="form-control" name="codeLang" [(ngModel)]="model.codeLang">
+          <option *ngFor="let lang of languages">
+            {{ lang }}
+          </option>
+
+        </select>
+      </div>
+      <!-- button type for forms always should be submit -->
+      <button class="btn btn-primary" type="submit">
+        Submit
+      </button>
+      <h4>Model: {{model | json}}</h4>
+      <h4>Angular: {{form.value | json}}</h4>
+
+    </form>
+  </div>
+</div>
